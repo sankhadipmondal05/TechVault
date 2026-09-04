@@ -74,8 +74,11 @@ export const CourseDetailPage: React.FC = () => {
     (l) => l._id === currentLesson?._id
   );
 
-  const handleLessonSelect = (lesson: ILesson) => {
+  const [autoPlay, setAutoPlay] = useState(false);
+
+  const handleLessonSelect = (lesson: ILesson, shouldAutoPlay = false) => {
     setCurrentLesson(lesson);
+    setAutoPlay(shouldAutoPlay);
     if (course) {
       setLastWatchedLesson(course, lesson._id, lesson.title);
     }
@@ -83,13 +86,23 @@ export const CourseDetailPage: React.FC = () => {
 
   const handlePreviousLesson = () => {
     if (currentLessonIndex > 0) {
-      handleLessonSelect(allLessons[currentLessonIndex - 1]);
+      handleLessonSelect(allLessons[currentLessonIndex - 1], true);
     }
   };
 
   const handleNextLesson = () => {
     if (currentLessonIndex < allLessons.length - 1) {
-      handleLessonSelect(allLessons[currentLessonIndex + 1]);
+      handleLessonSelect(allLessons[currentLessonIndex + 1], true);
+    }
+  };
+
+  const handleLessonEnded = () => {
+    if (course && currentLesson) {
+      markLessonCompleted(course, currentLesson._id);
+      // Automatically advance to next lesson in the curriculum
+      if (currentLessonIndex < allLessons.length - 1) {
+        handleLessonSelect(allLessons[currentLessonIndex + 1], true);
+      }
     }
   };
 
@@ -182,12 +195,8 @@ export const CourseDetailPage: React.FC = () => {
               key={currentLesson.youtubeVideoId}
               videoId={currentLesson.youtubeVideoId}
               title={currentLesson.title}
-              autoPlay={false}
-              onComplete={() => {
-                if (course && currentLesson) {
-                  markLessonCompleted(course, currentLesson._id);
-                }
-              }}
+              autoPlay={autoPlay}
+              onComplete={handleLessonEnded}
             />
           ) : (
             <div className="aspect-video bg-secondary rounded-2xl flex items-center justify-center text-muted-foreground">

@@ -133,12 +133,24 @@ const seedDatabase = async () => {
     await mongoose.connect(ENV.MONGODB_URI);
     console.log('[Seed] Connected.');
 
-    console.log('[Seed] Cleaning old collection data...');
+    console.log('[Seed] Cleaning old collection data & indexes...');
+    try {
+      await Promise.all([
+        Category.collection.drop().catch(() => {}),
+        Subject.collection.drop().catch(() => {}),
+        Course.collection.drop().catch(() => {}),
+        OneShot.collection.drop().catch(() => {})
+      ]);
+    } catch (e) {
+      console.log('[Seed] Collection drop notice:', e);
+    }
+
+    // Ensure models create indexes with language_override: 'none'
     await Promise.all([
-      Category.deleteMany({}),
-      Subject.deleteMany({}),
-      Course.deleteMany({}),
-      OneShot.deleteMany({})
+      Category.createIndexes(),
+      Subject.createIndexes(),
+      Course.createIndexes(),
+      OneShot.createIndexes()
     ]);
 
     console.log('[Seed] Inserting Categories...');
@@ -735,6 +747,190 @@ const seedDatabase = async () => {
             ]
           }
         ]
+      },
+      {
+        title: 'Compiler Design Complete Course',
+        slug: 'compiler-design-complete-course',
+        description: 'Comprehensive curriculum on compiler architecture from Knowledge Gate: Lexical Analysis, Syntax Analysis, LL(1) & LR Parsing, Syntax Directed Translation, and Code Optimization.',
+        subject: subjectMap.get('compiler-design'),
+        subjectSlug: 'compiler-design',
+        instructor: 'Sanchit Jain (Knowledge Gate)',
+        thumbnail: 'https://img.youtube.com/vi/Cb46_P12bMY/hqdefault.jpg',
+        level: 'Intermediate',
+        language: 'English / Hindi',
+        totalDuration: '10h 30m',
+        totalLessons: 6,
+        featured: true,
+        tags: ['Compiler Design', 'Lexical Analysis', 'Parsing', 'LL(1)', 'LR Parsing', 'GATE CS'],
+        modules: [
+          {
+            title: 'Module 1: Introduction & Lexical Analysis',
+            description: 'Phases of compiler, tokenization, regular expressions, and DFA construction.',
+            order: 1,
+            lessons: [
+              {
+                title: '01. Introduction to Compiler Design & Phases of Compiler',
+                description: 'Overview of Analysis and Synthesis phases, Lexical Analyzer, Syntax Analyzer, Semantic Analyzer, and Target Code Generator.',
+                youtubeVideoId: 'Cb46_P12bMY',
+                duration: '45m',
+                order: 1,
+                important: true,
+                resources: []
+              },
+              {
+                title: '02. Lexical Analysis & Token Recognition with DFA',
+                description: 'Tokens, Patterns, Lexemes, regular expressions to DFA minimization, and handling input buffering.',
+                youtubeVideoId: '5k8d9n7j09w',
+                duration: '1h 15m',
+                order: 2,
+                important: true,
+                resources: []
+              }
+            ]
+          },
+          {
+            title: 'Module 2: Syntax Analysis & Top-Down Parsing',
+            description: 'Context-free grammars, ambiguity, First & Follow sets, and LL(1) parse table construction.',
+            order: 2,
+            lessons: [
+              {
+                title: '03. Context Free Grammars & Ambiguity Removal',
+                description: 'Derivations, parse trees, resolving left recursion, and left factoring techniques.',
+                youtubeVideoId: 'R9f4_p2ZfM4',
+                duration: '1h 20m',
+                order: 3,
+                important: true,
+                resources: []
+              },
+              {
+                title: '04. First and Follow Sets & LL(1) Parsing Table',
+                description: 'Systematic calculation of First and Follow sets, predictive parsing table construction, and conflict detection.',
+                youtubeVideoId: 'X9T8mGk4q9c',
+                duration: '1h 40m',
+                order: 4,
+                important: true,
+                resources: []
+              }
+            ]
+          },
+          {
+            title: 'Module 3: Bottom-Up Parsing & Code Generation',
+            description: 'Shift-Reduce parsing, LR(0), SLR(1), CLR(1), LALR(1), and Intermediate Code Generation.',
+            order: 3,
+            lessons: [
+              {
+                title: '05. LR Parsers: LR(0), SLR(1) & LALR(1) Parsing Tables',
+                description: 'Canonical collection of LR items, shift-reduce conflicts, and parsing table construction rules.',
+                youtubeVideoId: 'T8mK_9pQ3v0',
+                duration: '2h 10m',
+                order: 5,
+                important: true,
+                resources: []
+              },
+              {
+                title: '06. Syntax Directed Translation & Intermediate Code (Three-Address Code)',
+                description: 'Synthesized vs inherited attributes, S-attributed vs L-attributed definitions, Quadruples, Triples, and DAG representation.',
+                youtubeVideoId: 'Q5_6W9aB7c0',
+                duration: '1h 35m',
+                order: 6,
+                important: true,
+                resources: []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        title: 'Complete SQL Master Course (Database Queries to Advanced Optimization)',
+        slug: 'complete-sql-master-course',
+        description: 'Complete hands-on SQL course from Knowledge Gate: Basic SELECT queries, joins, subqueries, grouping, aggregate functions, DDL/DML, and query optimization.',
+        subject: subjectMap.get('dbms'),
+        subjectSlug: 'dbms',
+        instructor: 'Sanchit Jain (Knowledge Gate)',
+        thumbnail: 'https://img.youtube.com/vi/323H_mOOWQ4/hqdefault.jpg',
+        level: 'All Levels',
+        language: 'English / Hindi',
+        totalDuration: '9h 15m',
+        totalLessons: 6,
+        featured: true,
+        tags: ['SQL', 'DBMS', 'Relational Database', 'Joins', 'Queries', 'Knowledge Gate'],
+        modules: [
+          {
+            title: 'Module 1: Introduction to SQL & DDL Commands',
+            description: 'Relational model, CREATE, ALTER, DROP, TRUNCATE, and constraints.',
+            order: 1,
+            lessons: [
+              {
+                title: '01. Introduction to SQL & Relational Database Architecture',
+                description: 'Understanding tables, schemas, data types, primary keys, foreign keys, and SQL command categories.',
+                youtubeVideoId: '323H_mOOWQ4',
+                duration: '50m',
+                order: 1,
+                important: true,
+                resources: []
+              },
+              {
+                title: '02. DDL & DML Commands: CREATE, INSERT, UPDATE, DELETE',
+                description: 'Hands-on table creation, data insertion, integrity constraints (UNIQUE, NOT NULL, CHECK), and modifications.',
+                youtubeVideoId: 'k7S_m9pL0Qw',
+                duration: '1h 20m',
+                order: 2,
+                important: true,
+                resources: []
+              }
+            ]
+          },
+          {
+            title: 'Module 2: Querying Data & Joins',
+            description: 'SELECT filtering, sorting, WHERE clause, and multi-table joins.',
+            order: 2,
+            lessons: [
+              {
+                title: '03. Master SQL Joins: INNER, LEFT, RIGHT, FULL OUTER & CROSS Joins',
+                description: 'Relational join mechanics, Venn diagrams for join logic, ON vs WHERE filtering, and multi-table joining.',
+                youtubeVideoId: 'HXV3zeQKqGY',
+                duration: '1h 45m',
+                order: 3,
+                important: true,
+                resources: []
+              },
+              {
+                title: '04. Aggregations, GROUP BY, and HAVING Clause',
+                description: 'COUNT, SUM, AVG, MIN, MAX calculations, grouping records, and filtering grouped datasets with HAVING.',
+                youtubeVideoId: 'W8_6LqT0p9o',
+                duration: '1h 15m',
+                order: 4,
+                important: true,
+                resources: []
+              }
+            ]
+          },
+          {
+            title: 'Module 3: Advanced SQL & Subqueries',
+            description: 'Nested subqueries, correlated subqueries, views, and indexes.',
+            order: 3,
+            lessons: [
+              {
+                title: '05. Nested Subqueries & Correlated Queries in SQL',
+                description: 'Single-row vs multi-row subqueries, IN, ANY, ALL operators, and correlated row-by-row subquery evaluation.',
+                youtubeVideoId: '1UwwqDqgWlE',
+                duration: '1h 35m',
+                order: 5,
+                important: true,
+                resources: []
+              },
+              {
+                title: '06. Views, Transactions, ACID & Indexing in SQL',
+                description: 'Creating virtual views, COMMIT/ROLLBACK transaction control, Clustered vs Non-Clustered index performance tuning.',
+                youtubeVideoId: 'kBdlM6hNDAE',
+                duration: '1h 30m',
+                order: 6,
+                important: true,
+                resources: []
+              }
+            ]
+          }
+        ]
       }
     ];
 
@@ -748,89 +944,44 @@ const seedDatabase = async () => {
         description: 'Complete revision of Computer Networks in a single sitting covering OSI, TCP/IP, Subnetting, Routing algorithms, and Application protocols with formula sheets and summary charts.',
         subject: subjectMap.get('computer-networks'),
         subjectSlug: 'computer-networks',
-        instructor: 'Gate Smashers (Varun Singla)',
+        instructor: 'Gate Smashers',
         youtubeVideoId: 'JFF2vJaN0Cw',
         thumbnail: 'https://img.youtube.com/vi/JFF2vJaN0Cw/hqdefault.jpg',
+        duration: '3h 30m',
+        level: 'All Levels',
+        language: 'English / Hindi',
+        tags: ['Computer Networks', 'OSI', 'TCP/IP', 'Subnetting', 'One Shot', 'GATE CS'],
+        featured: true
+      },
+      {
+        title: 'Operating Systems in One Shot — Complete Marathon for Placements & Exams',
+        slug: 'operating-systems-complete-marathon-one-shot',
+        description: 'Comprehensive 4-hour review of process synchronization, CPU scheduling, Bankers algorithm, deadlocks, paging, and memory management algorithms.',
+        subject: subjectMap.get('operating-systems'),
+        subjectSlug: 'operating-systems',
+        instructor: 'Knowledge Gate (Sanchit Jain)',
+        youtubeVideoId: 'bkSWJJZNgf8',
+        thumbnail: 'https://img.youtube.com/vi/bkSWJJZNgf8/hqdefault.jpg',
         duration: '4h 15m',
         level: 'All Levels',
         language: 'English / Hindi',
-        tags: ['Revision', 'GATE Exam', 'Computer Networks', 'Formulas', 'Quick Study'],
+        tags: ['Operating Systems', 'Processes', 'Scheduling', 'Paging', 'One Shot', 'GATE CS'],
         featured: true
       },
       {
-        title: 'Computer Networks Crash Course for Interviews',
-        slug: 'computer-networks-crash-course-interviews',
-        description: 'High-yield conceptual revision focusing on top engineering interview questions: TCP vs UDP, DNS lookup process, SSL/TLS handshake, and REST vs WebSockets.',
-        subject: subjectMap.get('computer-networks'),
-        subjectSlug: 'computer-networks',
-        instructor: 'Hussein Nasser',
-        youtubeVideoId: 'IPvYjXCsTg8',
-        thumbnail: 'https://img.youtube.com/vi/IPvYjXCsTg8/hqdefault.jpg',
-        duration: '2h 10m',
-        level: 'Intermediate',
-        language: 'English',
-        tags: ['Interview Prep', 'Software Engineering', 'Networking', 'Backend'],
-        featured: true
-      },
-      {
-        title: 'Operating Systems Complete One Shot Revision',
-        slug: 'operating-systems-complete-one-shot',
-        description: 'All operating system chapters summarized in 3.5 hours: Process scheduling algorithms, Banker algorithm for deadlocks, paging and page replacement calculation shortcuts.',
-        subject: subjectMap.get('operating-systems'),
-        subjectSlug: 'operating-systems',
-        instructor: 'Gate Smashers',
-        youtubeVideoId: 'bkSWJJZNgf8',
-        thumbnail: 'https://img.youtube.com/vi/bkSWJJZNgf8/hqdefault.jpg',
-        duration: '3h 35m',
-        level: 'All Levels',
-        language: 'English / Hindi',
-        tags: ['Operating Systems', 'One-Shot', 'Exam Revision', 'Deadlocks', 'Paging'],
-        featured: true
-      },
-      {
-        title: 'Operating Systems in 1 Hour — High Speed Overview',
-        slug: 'operating-systems-in-1-hour',
-        description: 'A rapid overview of modern OS design concepts for quick review before exams or system design rounds.',
-        subject: subjectMap.get('operating-systems'),
-        subjectSlug: 'operating-systems',
-        instructor: 'Kunal Kushwaha',
-        youtubeVideoId: '26QPDBe-NB8',
-        thumbnail: 'https://img.youtube.com/vi/26QPDBe-NB8/hqdefault.jpg',
-        duration: '1h 15m',
-        level: 'Beginner',
-        language: 'English',
-        tags: ['Fast Revision', 'Operating Systems', 'CS Core'],
-        featured: false
-      },
-      {
-        title: 'DBMS Complete One Shot: Theory, Queries & Normalization',
-        slug: 'dbms-complete-one-shot-revision',
-        description: 'All-in-one database management systems marathon covering relational algebra, SQL join patterns, normal forms (1NF-BCNF), and transaction serializability.',
+        title: 'DBMS Complete Revision in One Shot',
+        slug: 'dbms-complete-revision-one-shot',
+        description: 'High-yield revision session for DBMS: ER diagrams, functional dependencies, 1NF to BCNF normalization algorithms, conflict serializability, and transaction recovery.',
         subject: subjectMap.get('dbms'),
         subjectSlug: 'dbms',
-        instructor: 'Knowledge Gate (Sanchit Jain)',
-        youtubeVideoId: '3EJlovevfcA',
-        thumbnail: 'https://img.youtube.com/vi/3EJlovevfcA/hqdefault.jpg',
-        duration: '4h 50m',
+        instructor: 'Gate Smashers',
+        youtubeVideoId: '6Iu45VZGQDk',
+        thumbnail: 'https://img.youtube.com/vi/6Iu45VZGQDk/hqdefault.jpg',
+        duration: '2h 45m',
         level: 'All Levels',
         language: 'English / Hindi',
         tags: ['DBMS', 'SQL', 'Normalization', 'One Shot', 'GATE CS'],
         featured: true
-      },
-      {
-        title: 'SQL in 60 Minutes — Everything You Need to Know',
-        slug: 'sql-in-60-minutes-one-shot',
-        description: 'From zero knowledge to writing complex multi-table SQL queries, aggregate window functions, and indexing in one hour.',
-        subject: subjectMap.get('dbms'),
-        subjectSlug: 'dbms',
-        instructor: 'Web Dev Simplified',
-        youtubeVideoId: 'p3qvj9hzk_k',
-        thumbnail: 'https://img.youtube.com/vi/p3qvj9hzk_k/hqdefault.jpg',
-        duration: '1h 02m',
-        level: 'Beginner',
-        language: 'English',
-        tags: ['SQL', 'Quick Start', 'Databases', 'Web Development'],
-        featured: false
       },
       {
         title: 'Data Structures and Algorithms in 5 Hours (Full Revision)',
@@ -895,17 +1046,17 @@ const seedDatabase = async () => {
       {
         title: 'Compiler Design One Shot Revision for Exams',
         slug: 'compiler-design-one-shot-revision',
-        description: 'Lexical analysis tokens, LL(1) First & Follow calculation algorithms, LR parsing tables, and Syntax Directed Definition summary in 3 hours.',
+        description: 'Lexical analysis tokens, LL(1) First & Follow calculation algorithms, LR parsing tables, and Syntax Directed Definition summary in full detail.',
         subject: subjectMap.get('compiler-design'),
         subjectSlug: 'compiler-design',
-        instructor: 'Gate Smashers',
-        youtubeVideoId: 'yv_kXp5l_4I',
-        thumbnail: 'https://img.youtube.com/vi/yv_kXp5l_4I/hqdefault.jpg',
-        duration: '3h 10m',
+        instructor: 'Knowledge Gate (Sanchit Jain)',
+        youtubeVideoId: '7Tq2Amm15g8',
+        thumbnail: 'https://img.youtube.com/vi/7Tq2Amm15g8/hqdefault.jpg',
+        duration: '3h 30m',
         level: 'Intermediate',
         language: 'English / Hindi',
-        tags: ['Compiler Design', 'Parsing', 'DFA', 'One Shot'],
-        featured: false
+        tags: ['Compiler Design', 'Parsing', 'DFA', 'One Shot', 'GATE CS'],
+        featured: true
       },
       {
         title: 'Java Full Course in 12 Hours (One-Shot Beginner to Advanced)',

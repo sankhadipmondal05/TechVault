@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { apiService } from '../services/api';
 import { ISubject, ICourse, IOneShot, ICategory } from '../types';
 import { CourseCard } from '../components/cards/CourseCard';
@@ -12,7 +12,10 @@ import { useProgress } from '../hooks/useProgress';
 import {
   Sparkles,
   ArrowRight,
-  Search,
+  Code,
+  Database,
+  Box,
+  Network,
   ShieldCheck,
   Tv,
   ListTree,
@@ -20,7 +23,6 @@ import {
 } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
-  const navigate = useNavigate();
   const [featuredSubjects, setFeaturedSubjects] = useState<ISubject[]>([]);
   const [popularCourses, setPopularCourses] = useState<ICourse[]>([]);
   const [oneShots, setOneShots] = useState<IOneShot[]>([]);
@@ -58,88 +60,151 @@ export const HomePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="space-y-16">
-      {/* Hero Section with 3D Ambient Waves & Neumorphic Search Bar */}
-      <section className="relative pt-8 pb-14 sm:pt-14 sm:pb-20 text-center max-w-5xl mx-auto overflow-visible rounded-3xl">
-        {/* Left Organic Fluid Ambient Gradient Wave */}
-        <div className="absolute -left-28 sm:-left-36 top-1/2 -translate-y-1/2 w-[340px] sm:w-[460px] h-[340px] sm:h-[460px] rounded-full neu-wave-left pointer-events-none select-none -z-10" />
-
-        {/* Right Organic Fluid Ambient Gradient Wave */}
-        <div className="absolute -right-28 sm:-right-36 top-1/2 -translate-y-1/2 w-[380px] sm:w-[500px] h-[380px] sm:h-[500px] rounded-full neu-wave-right pointer-events-none select-none -z-10" />
-
-        {/* Bottom Right Floating Glossy 3D Clay Sphere */}
-        <div className="hidden lg:block absolute -right-6 2xl:-right-12 bottom-6 pointer-events-none select-none z-20">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full neu-floating-sphere animate-bounce-subtle" />
+    <div className="space-y-24">
+      {/* Full-Viewport Hero Section with 50% Submerged Clock Sculpture Flush at Bottom */}
+      <section className="relative pt-2 pb-0 sm:pt-4 sm:pb-0 text-center max-w-7xl mx-auto overflow-hidden rounded-3xl min-h-[calc(100vh-92px)] flex flex-col justify-between">
+        {/* Curved Flow Guideline Track */}
+        <div className="absolute inset-0 pointer-events-none select-none -z-10 hidden md:block">
+          <svg className="w-full h-full" viewBox="0 0 1200 450" fill="none" preserveAspectRatio="none">
+            <path
+              d="M 60 260 C 130 140, 240 60, 420 140 C 600 220, 780 320, 980 160 C 1080 80, 1140 120, 1160 260"
+              stroke="rgba(166, 175, 195, 0.45)"
+              strokeWidth="2"
+              strokeDasharray="4 6"
+              fill="none"
+            />
+          </svg>
         </div>
 
-        {/* Center Hero Content */}
-        <div className="relative z-20 space-y-6 max-w-3xl mx-auto px-4">
-          <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full neu-btn text-xs font-semibold text-muted-foreground">
-            <span className="flex h-2.5 w-2.5 rounded-full neu-accent-glow"></span>
-            <span className="font-display tracking-wide uppercase text-[11px]">Curated Technical Learning Library</span>
+        {/* Ambient Violet Glow Spots behind cards */}
+        <div className="absolute left-6 top-6 w-64 h-64 rounded-full bg-accent/20 blur-3xl pointer-events-none select-none -z-10" />
+        <div className="absolute right-6 top-6 w-64 h-64 rounded-full bg-accent/20 blur-3xl pointer-events-none select-none -z-10" />
+
+        {/* --- FLOATING 3D NEUMORPHIC CARDS WITH CLIMBING & BOUNCING SPHERES --- */}
+        {/* 1. Top-Left Card: Development */}
+        <div className="hidden xl:block absolute left-6 2xl:left-14 top-6 z-20">
+          <Link
+            to="/subjects?category=computer-science"
+            className="relative flex flex-col items-center justify-center w-32 h-32 sm:w-36 sm:h-36 rounded-3xl neu-inset p-4 group hover:scale-105 transition-all duration-300 transform -rotate-6"
+          >
+            <div className="text-accent mb-2 group-hover:scale-110 transition-transform">
+              <Code className="h-8 w-8 stroke-[2.5]" />
+            </div>
+            <span className="text-xs sm:text-sm font-bold text-foreground font-display tracking-tight">Development</span>
+
+            {/* Ball: Fixed Shadow Casing + Rolling Inner Core */}
+            <div className="absolute w-8 h-8 rounded-full animate-card-bilateral pointer-events-none z-30">
+              <div className="w-full h-full rounded-full neu-sphere-casing animate-sphere-squash-bilateral">
+                <div className="w-full h-full animate-ball-roll neu-sphere-rolling-core" />
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        {/* 2. Bottom-Left Card: Data Science */}
+        <div className="hidden xl:block absolute left-12 2xl:left-20 bottom-36 sm:bottom-40 z-20">
+          <Link
+            to="/subjects?category=data-science-ai"
+            className="relative flex flex-col items-center justify-center w-32 h-32 sm:w-36 sm:h-36 rounded-3xl neu-inset p-4 group hover:scale-105 transition-all duration-300 transform rotate-3"
+          >
+            <div className="text-accent mb-2 group-hover:scale-110 transition-transform">
+              <Database className="h-8 w-8 stroke-[2.5]" />
+            </div>
+            <span className="text-xs sm:text-sm font-bold text-foreground font-display tracking-tight">Data Science</span>
+
+            {/* Ball: Fixed Shadow Casing + Rolling Inner Core */}
+            <div className="absolute w-8 h-8 rounded-full animate-card-bilateral-alt pointer-events-none z-30">
+              <div className="w-full h-full rounded-full neu-sphere-casing animate-sphere-squash-bilateral-alt">
+                <div className="w-full h-full animate-ball-roll-alt neu-sphere-rolling-core" />
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        {/* 3. Top-Right Card: Computer Science */}
+        <div className="hidden xl:block absolute right-6 2xl:right-14 top-6 z-20">
+          <Link
+            to="/subjects?category=core-engineering"
+            className="relative flex flex-col items-center justify-center w-32 h-32 sm:w-36 sm:h-36 rounded-3xl neu-inset p-4 group hover:scale-105 transition-all duration-300 transform rotate-6"
+          >
+            <div className="text-accent mb-2 group-hover:scale-110 transition-transform">
+              <Network className="h-8 w-8 stroke-[2.5]" />
+            </div>
+            <span className="text-xs sm:text-sm font-bold text-foreground font-display tracking-tight text-center leading-tight">Computer Science</span>
+
+            {/* Ball: Fixed Shadow Casing + Rolling Inner Core */}
+            <div className="absolute w-8 h-8 rounded-full animate-card-bilateral-fast pointer-events-none z-30">
+              <div className="w-full h-full rounded-full neu-sphere-casing animate-sphere-squash-bilateral-fast">
+                <div className="w-full h-full animate-ball-roll-fast neu-sphere-rolling-core" />
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        {/* 4. Bottom-Right Card: Engineering */}
+        <div className="hidden xl:block absolute right-12 2xl:right-20 bottom-36 sm:bottom-40 z-20">
+          <Link
+            to="/subjects?category=system-design-devops"
+            className="relative flex flex-col items-center justify-center w-32 h-32 sm:w-36 sm:h-36 rounded-3xl neu-inset p-4 group hover:scale-105 transition-all duration-300 transform -rotate-3"
+          >
+            <div className="text-accent mb-2 group-hover:scale-110 transition-transform">
+              <Box className="h-8 w-8 stroke-[2.5]" />
+            </div>
+            <span className="text-xs sm:text-sm font-bold text-foreground font-display tracking-tight">Engineering</span>
+
+            {/* Ball: Fixed Shadow Casing + Rolling Inner Core */}
+            <div className="absolute w-8 h-8 rounded-full animate-card-bilateral-alt-fast pointer-events-none z-30">
+              <div className="w-full h-full rounded-full neu-sphere-casing animate-sphere-squash-bilateral-alt-fast">
+                <div className="w-full h-full animate-ball-roll-alt-fast neu-sphere-rolling-core" />
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        {/* Center Hero Content (Headline + Subtitle with balanced badge spacing) */}
+        <div className="relative z-20 max-w-3xl mx-auto px-4 pt-1 sm:pt-2 flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full neu-btn text-xs font-semibold text-muted-foreground mb-3 sm:mb-4">
+            <span className="flex h-2 w-2 rounded-full neu-accent-glow"></span>
+            <span className="font-display tracking-wide uppercase text-[10px]">Curated Technical Learning Library</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-foreground leading-[1.1]">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold tracking-tight text-foreground leading-[1.12]">
             Learn technical subjects. <br />
             <span className="bg-gradient-to-r from-accent via-indigo-500 to-purple-600 bg-clip-text text-transparent">
               All in one place.
             </span>
           </h1>
 
-          <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed font-body">
+          <p className="text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed font-body mt-2">
             Structured curricula, organized modules, and high-yield one-shot revision videos directly from world-class educators.
           </p>
+        </div>
 
-          {/* Large Neumorphic Search Bar */}
-          <div className="pt-2 max-w-2xl mx-auto">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const input = (e.currentTarget.elements.namedItem('search') as HTMLInputElement)?.value;
-                if (input?.trim()) {
-                  navigate(`/search?q=${encodeURIComponent(input.trim())}`);
-                }
-              }}
-              className="relative flex items-center p-2 rounded-full neu-card transition-all duration-300 hover:shadow-lg"
-            >
-              <div className="pl-4 pr-3 text-muted-foreground pointer-events-none">
-                <Search className="h-5 w-5 text-muted-foreground/70" />
-              </div>
-              <input
-                type="text"
-                name="search"
-                placeholder="Search for courses, subjects or topics..."
-                className="w-full bg-transparent text-foreground placeholder:text-muted-foreground/60 text-sm sm:text-base focus:outline-none pr-4 font-body"
-              />
-              <button
-                type="submit"
-                className="flex-shrink-0 w-11 h-11 rounded-full neu-accent-glow flex items-center justify-center text-white shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
-                aria-label="Search"
-              >
-                <ArrowRight className="h-5 w-5 stroke-[2.5]" />
-              </button>
-            </form>
+        {/* Center Larger Submerged Clock Sculpture Flush at Bottom */}
+        <div className="relative w-full flex justify-center items-end pointer-events-none select-none overflow-hidden h-64 sm:h-80 md:h-96 -mt-4 sm:-mt-6">
+          <div className="relative w-[440px] h-[440px] sm:w-[580px] sm:h-[580px] md:w-[640px] md:h-[640px] flex items-center justify-center -rotate-90 translate-y-1/2">
+            {/* Semicircle Indented Sunken Crescent Groove */}
+            <div className="absolute inset-0 rounded-full neu-relief-crescent [clip-path:polygon(50%_0,100%_0,100%_100%,50%_100%)]" />
 
-            {/* Popular Topics Quick Tags */}
-            <div className="flex flex-wrap items-center justify-center gap-2.5 pt-5 text-xs text-muted-foreground">
-              <span className="font-semibold text-foreground/80">Popular right now:</span>
-              {[
-                { label: 'DSA', query: 'dsa' },
-                { label: 'Web Development', query: 'web' },
-                { label: 'Machine Learning', query: 'machine learning' },
-                { label: 'System Design', query: 'system design' }
-              ].map((item) => (
-                <Link
-                  key={item.label}
-                  to={`/search?q=${encodeURIComponent(item.query)}`}
-                  className="px-3.5 py-1 rounded-full neu-btn text-[11px] font-medium text-muted-foreground hover:text-foreground transition-all"
-                >
-                  {item.label}
-                </Link>
-              ))}
+            {/* Violet Ambient Glowing Backlight */}
+            <div className="absolute left-2 w-80 h-80 sm:w-[420px] sm:h-[420px] rounded-full neu-accent-glow opacity-85 blur-3xl" />
+
+            {/* Central Raised Floating Convex Plate */}
+            <div className="relative w-72 h-72 sm:w-96 sm:h-96 md:w-[420px] md:h-[420px] rounded-full neu-relief-circle z-10 flex items-center justify-center">
+              {/* Inner Core Indented Well */}
+              <div className="w-24 h-24 sm:w-36 sm:h-36 rounded-full neu-inset opacity-60" />
+            </div>
+
+            {/* Orbiting Clock Hand / Bead Armature */}
+            <div className="absolute inset-0 z-20 animate-neu-orbit-clock flex items-center justify-center pointer-events-none">
+              {/* Clean Raised Clay Orbiting Bead */}
+              <div className="absolute -top-5 sm:-top-6 w-12 h-12 sm:w-14 sm:h-14 rounded-full neu-btn shadow-md" />
             </div>
           </div>
         </div>
+
+        {/* Bottom Fade Gradient for seamless hero section transition */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-t from-background via-background/60 to-transparent pointer-events-none z-20" />
       </section>
 
       {/* Continue Learning Banner (Neumorphic Card with Inset Progress) */}

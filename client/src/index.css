@@ -102,26 +102,428 @@
 
 .neu-text-indent-accent {
   text-shadow: 2px 2px 4px rgba(112, 71, 235, 0.5),
-               -1px -1px 2px rgba(255, 255, 255, 0.8);
+    -1px -1px 2px rgba(255, 255, 255, 0.8);
 }
 
-/* 6. Neumorphic 3D Organic Waves & Floating Glossy Sphere */
-.neu-wave-left {
-  background: radial-gradient(circle at 10% 50%, rgba(144, 102, 255, 0.45) 0%, rgba(112, 71, 235, 0.25) 40%, rgba(233, 236, 242, 0) 75%);
-  filter: blur(40px);
+/* 6. Neumorphic Dual-Depth Relief Sculptures (Center Clock Mechanism) */
+.neu-relief-crescent {
+  background: hsl(var(--background));
+  box-shadow: inset 8px 8px 18px rgba(166, 175, 195, 0.75),
+    inset -8px -8px 18px rgba(255, 255, 255, 1);
 }
 
-.neu-wave-right {
-  background: radial-gradient(circle at 90% 60%, rgba(130, 85, 255, 0.55) 0%, rgba(160, 125, 255, 0.3) 45%, rgba(233, 236, 242, 0) 80%);
-  filter: blur(45px);
+.neu-relief-circle {
+  background: hsl(var(--background));
+  box-shadow: 10px 10px 24px rgba(166, 175, 195, 0.65),
+    -10px -10px 24px rgba(255, 255, 255, 0.95);
 }
 
-.neu-floating-sphere {
-  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #e1e5ee 35%, #b9c2d5 70%, #9ca9c2 100%);
-  box-shadow: 18px 22px 35px rgba(138, 149, 175, 0.55),
-              -12px -12px 25px rgba(255, 255, 255, 0.95),
-              inset -8px -8px 16px rgba(140, 150, 175, 0.4),
-              inset 8px 8px 16px rgba(255, 255, 255, 0.9);
+/* Orbital animation: Clockwise over flat area (0deg to 180deg) then smoothly anticlockwise through indented semicircular track (180deg back to 0deg) */
+@keyframes neu-orbit-clock-rebound {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-neu-orbit-clock {
+  animation: neu-orbit-clock-rebound 7s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  transform-origin: center center;
+}
+
+/* Card Continuous Alternating Climb, Ceiling Traverse, Fall, Bounce & Climb Opposite Wall */
+/* 
+   Cycle (Total 100%):
+   Phase 1 (Right climb & fall):
+   - 0% -> 18%: Climbs up Right Wall to ceiling
+   - 18% -> 26%: Traverses across the ceiling (Right to Middle-Left)
+   - 26% -> 33%: Loses grip and Free-Falls straight down to the base floor
+   - 33% -> 38%: High elastic bounce
+   - 38% -> 43%: Secondary landing bounce
+   - 43% -> 50%: Rolls along base toward Left Wall
+
+   Phase 2 (Left climb & fall - Opposite Wall):
+   - 50% -> 68%: Climbs up Left Wall to ceiling
+   - 68% -> 76%: Traverses across the ceiling (Left to Middle-Right)
+   - 76% -> 83%: Loses grip and Free-Falls straight down to base floor
+   - 83% -> 88%: High elastic bounce
+   - 88% -> 93%: Secondary landing bounce
+   - 93% -> 100%: Rolls along base toward Right Wall to loop infinitely
+*/
+/* Card Continuous Alternating Climb, Ceiling Traverse, Fall, Bounce & Climb Opposite Wall */
+/* 
+   Smooth Physics-Engine Model:
+   - Phase 1 (Right climb -> Left drop & bounce):
+     * 0% -> 18%: Climbs Right Wall (CCW rolling: 0deg -> -360deg)
+     * 18% -> 26%: Traverses ceiling leftwards (CCW rolling: -360deg -> -540deg)
+     * 26% -> 33%: Free-Falls down to floor (NO rotation, stays -540deg)
+     * 33% -> 42%: Smooth parabolic high bounce (CCW roll: -540deg -> -720deg)
+     * 42% -> 50%: Smooth rolling glide to Left Wall base (CCW roll: -720deg -> -900deg)
+
+   - Phase 2 (Left climb -> Right drop & bounce):
+     * 50% -> 68%: Climbs Left Wall (Instant CW roll reversal: -900deg -> -540deg, +360deg CW)
+     * 68% -> 76%: Traverses ceiling rightwards (CW roll: -540deg -> -360deg, +180deg CW)
+     * 76% -> 83%: Free-Falls down to floor (NO rotation, stays -360deg)
+     * 83% -> 92%: Smooth parabolic high bounce (CW roll: -360deg -> -180deg, +180deg CW)
+     * 92% -> 100%: Smooth rolling glide to Right Wall base (CW roll: -180deg -> 0deg, +180deg CW)
+*/
+/* Card Continuous Alternating Climb, Ceiling Traverse, Fall, Bounce & Climb Opposite Wall */
+/* 
+   True-Contact Non-Slip Rolling Physics Model:
+   - Traversal speed is balanced with rotation speed (angular velocity = linear velocity / radius)
+   - Phase 1 (Right climb -> Left drop & bounce):
+     * 0% -> 20%: Climbs Right Wall smoothly (CCW: 0deg -> -480deg)
+     * 20% -> 34%: Traverses ceiling leftwards at realistic rolling pace (CCW: -480deg -> -760deg)
+     * 34% -> 39%: Free-Falls down to floor (NO rotation, stays -760deg)
+     * 39% -> 44%: Parabolic bounce (CCW: -760deg -> -880deg)
+     * 44% -> 50%: Smooth rolling to Left Wall base (CCW: -880deg -> -1080deg)
+
+   - Phase 2 (Left climb -> Right drop & bounce):
+     * 50% -> 70%: Climbs Left Wall smoothly (CW: -1080deg -> -600deg, +480deg CW)
+     * 70% -> 84%: Traverses ceiling rightwards at realistic rolling pace (CW: -600deg -> -320deg, +280deg CW)
+     * 84% -> 89%: Free-Falls down to floor (NO rotation, stays -320deg)
+     * 89% -> 94%: Parabolic bounce (CW: -320deg -> -200deg, +120deg CW)
+     * 94% -> 100%: Smooth rolling to Right Wall base (CW: -200deg -> 0deg, +200deg CW)
+*/
+@keyframes neu-card-bilateral-climb-fall {
+  /* Phase 1: Climb Right Wall */
+  0% {
+    top: calc(100% - 18px);
+    left: calc(100% - 18px);
+  }
+  20% {
+    top: -14px;
+    left: calc(100% - 18px);
+  }
+  /* Realistic Pace Ceiling Traversal Leftwards */
+  34% {
+    top: -14px;
+    left: calc(50% - 16px);
+  }
+  /* Gravity Free-Fall */
+  39% {
+    top: calc(100% - 18px);
+    left: calc(50% - 16px);
+  }
+  /* Parabolic bounce arc */
+  41.5% {
+    top: calc(100% - 46px);
+    left: calc(36% - 16px);
+  }
+  44% {
+    top: calc(100% - 18px);
+    left: calc(22% - 16px);
+  }
+  /* Roll to base of Left Wall */
+  50% {
+    top: calc(100% - 18px);
+    left: -12px;
+  }
+
+  /* Phase 2: Climb Opposite (Left) Wall */
+  70% {
+    top: -14px;
+    left: -12px;
+  }
+  /* Realistic Pace Ceiling Traversal Rightwards */
+  84% {
+    top: -14px;
+    left: calc(50% + 4px);
+  }
+  /* Gravity Free-Fall */
+  89% {
+    top: calc(100% - 18px);
+    left: calc(50% + 4px);
+  }
+  /* Parabolic bounce arc */
+  91.5% {
+    top: calc(100% - 46px);
+    left: calc(64% + 4px);
+  }
+  94% {
+    top: calc(100% - 18px);
+    left: calc(78% + 4px);
+  }
+  /* Roll back to Right Wall base */
+  100% {
+    top: calc(100% - 18px);
+    left: calc(100% - 18px);
+  }
+}
+
+/* Phase offset version for diagonal pair */
+@keyframes neu-card-bilateral-climb-fall-alt {
+  0% {
+    top: calc(100% - 18px);
+    left: -12px;
+  }
+  20% {
+    top: -14px;
+    left: -12px;
+  }
+  34% {
+    top: -14px;
+    left: calc(50% + 4px);
+  }
+  39% {
+    top: calc(100% - 18px);
+    left: calc(50% + 4px);
+  }
+  41.5% {
+    top: calc(100% - 46px);
+    left: calc(64% + 4px);
+  }
+  44% {
+    top: calc(100% - 18px);
+    left: calc(78% + 4px);
+  }
+  50% {
+    top: calc(100% - 18px);
+    left: calc(100% - 18px);
+  }
+  70% {
+    top: -14px;
+    left: calc(100% - 18px);
+  }
+  84% {
+    top: -14px;
+    left: calc(50% - 16px);
+  }
+  89% {
+    top: calc(100% - 18px);
+    left: calc(50% - 16px);
+  }
+  91.5% {
+    top: calc(100% - 46px);
+    left: calc(36% - 16px);
+  }
+  94% {
+    top: calc(100% - 18px);
+    left: calc(22% - 16px);
+  }
+  100% {
+    top: calc(100% - 18px);
+    left: -12px;
+  }
+}
+
+/* Fluid Squash & Stretch */
+@keyframes neu-sphere-bounce-squash-bilateral {
+  0%, 37% {
+    transform: scale(1, 1);
+  }
+  39% {
+    transform: scale(1.22, 0.78);
+  }
+  40.5% {
+    transform: scale(0.9, 1.1);
+  }
+  41.5% {
+    transform: scale(1, 1);
+  }
+  44% {
+    transform: scale(1.08, 0.92);
+  }
+  46%, 87% {
+    transform: scale(1, 1);
+  }
+  89% {
+    transform: scale(1.22, 0.78);
+  }
+  90.5% {
+    transform: scale(0.9, 1.1);
+  }
+  91.5% {
+    transform: scale(1, 1);
+  }
+  94% {
+    transform: scale(1.08, 0.92);
+  }
+  96%, 100% {
+    transform: scale(1, 1);
+  }
+}
+
+.animate-card-bilateral {
+  animation: neu-card-bilateral-climb-fall 8.5s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+}
+
+.animate-card-bilateral-alt {
+  animation: neu-card-bilateral-climb-fall-alt 9s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+}
+
+.animate-card-bilateral-fast {
+  animation: neu-card-bilateral-climb-fall 8s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+}
+
+.animate-card-bilateral-alt-fast {
+  animation: neu-card-bilateral-climb-fall-alt 8.4s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+}
+
+.animate-sphere-squash-bilateral {
+  animation: neu-sphere-bounce-squash-bilateral 8.5s ease-in-out infinite;
+}
+
+.animate-sphere-squash-bilateral-alt {
+  animation: neu-sphere-bounce-squash-bilateral 9s ease-in-out infinite;
+}
+
+.animate-sphere-squash-bilateral-fast {
+  animation: neu-sphere-bounce-squash-bilateral 8s ease-in-out infinite;
+}
+
+.animate-sphere-squash-bilateral-alt-fast {
+  animation: neu-sphere-bounce-squash-bilateral 8.4s ease-in-out infinite;
+}
+
+/* Static Light & Shadow Casing (Does NOT rotate - stays locked with the light source) */
+.neu-sphere-casing {
+  background: radial-gradient(circle at 32% 28%, #ffffff 0%, #f0f3fa 25%, #d1d8e8 55%, #a8b4cc 85%, #8896b3 100%);
+  box-shadow: 8px 12px 20px rgba(138, 149, 175, 0.45),
+    -6px -6px 14px rgba(255, 255, 255, 0.95),
+    0 10px 22px rgba(112, 71, 235, 0.4),
+    0 4px 10px rgba(112, 71, 235, 0.25),
+    inset -4px -4px 8px rgba(112, 71, 235, 0.25),
+    inset 4px 4px 8px rgba(255, 255, 255, 0.9);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Rolling Texture Keyframes (Matched 1-to-1 with surface displacement) */
+@keyframes neu-ball-roll-bilateral {
+  /* Phase 1: Climb Right Wall (CCW rolling) */
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-480deg);
+  }
+  /* Traverse ceiling leftwards (proportional steady rolling) */
+  34% {
+    transform: rotate(-760deg);
+  }
+  /* Free-fall (Holds angle still in air) */
+  39% {
+    transform: rotate(-760deg);
+  }
+  /* Bounce & Roll across floor (CCW continuation) */
+  44% {
+    transform: rotate(-880deg);
+  }
+  50% {
+    transform: rotate(-1080deg);
+  }
+
+  /* Phase 2: Climb Opposite (Left) Wall -> INSTANT CW ROTATION */
+  70% {
+    transform: rotate(-600deg);
+  }
+  /* Traverse ceiling rightwards (proportional steady rolling) */
+  84% {
+    transform: rotate(-320deg);
+  }
+  /* Free-fall (Holds angle still in air) */
+  89% {
+    transform: rotate(-320deg);
+  }
+  /* Bounce & Roll across floor (CW continuation) */
+  94% {
+    transform: rotate(-200deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes neu-ball-roll-bilateral-alt {
+  /* Phase 1: Climb Left Wall (CW rolling) */
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(480deg);
+  }
+  /* Traverse ceiling rightwards */
+  34% {
+    transform: rotate(760deg);
+  }
+  /* Free-fall (Holds still) */
+  39% {
+    transform: rotate(760deg);
+  }
+  /* Bounce & Roll across floor */
+  44% {
+    transform: rotate(880deg);
+  }
+  50% {
+    transform: rotate(1080deg);
+  }
+
+  /* Phase 2: Climb Opposite (Right) Wall -> INSTANT CCW ROTATION */
+  70% {
+    transform: rotate(600deg);
+  }
+  /* Traverse ceiling leftwards */
+  84% {
+    transform: rotate(320deg);
+  }
+  /* Free-fall (Holds still) */
+  89% {
+    transform: rotate(320deg);
+  }
+  /* Bounce & Roll across floor */
+  94% {
+    transform: rotate(200deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-ball-roll {
+  animation: neu-ball-roll-bilateral 8.5s linear infinite;
+}
+
+.animate-ball-roll-alt {
+  animation: neu-ball-roll-bilateral-alt 9s linear infinite;
+}
+
+.animate-ball-roll-fast {
+  animation: neu-ball-roll-bilateral 8s linear infinite;
+}
+
+.animate-ball-roll-alt-fast {
+  animation: neu-ball-roll-bilateral-alt 8.4s linear infinite;
+}
+
+/* Subtle clay seam + specular dots inside rolling layer */
+.neu-sphere-rolling-core {
+  position: absolute;
+  inset: -15%;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle at 45% 45%, rgba(255, 255, 255, 0.4) 0%, transparent 60%),
+              radial-gradient(circle at 65% 30%, rgba(112, 71, 235, 0.2) 0%, transparent 40%),
+              radial-gradient(circle at 30% 70%, rgba(112, 71, 235, 0.15) 0%, transparent 40%);
+}
+
+.neu-sphere-rolling-core::before {
+  content: '';
+  position: absolute;
+  top: 48%;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.7) 30%, rgba(112, 71, 235, 0.35) 70%, transparent 100%);
+  transform: rotate(25deg);
 }
 
 /* Custom Neumorphic Sunken Scrollbars (Floating Accent Thumb inside Sunken Groove) */
