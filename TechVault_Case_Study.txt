@@ -1,0 +1,73 @@
+================================================================================
+CASE STUDY: TECHVAULT - CURATED TECHNICAL LEARNING PLATFORM
+================================================================================
+
+PROJECT OVERVIEW
+----------------
+TechVault is a curated, privacy-first technical education platform designed to 
+structure scattered software engineering lectures into comprehensive curricula 
+and high-yield one-shots. Built on a modern TypeScript stack, TechVault pairs 
+a tactile Neumorphic clay aesthetic with an automated video completion engine.
+
+THE CHALLENGE
+-------------
+Self-directed technical learners face three core obstacles:
+1. Playlist Fragmentation: High-quality YouTube lectures are lost in algorithm 
+   noise, broken playlists, and missing syllabi.
+2. Sign-Up Friction: Most e-learning sites mandate logins and tracking cookies 
+   just to bookmark videos or track progress.
+3. Completion Drop-Off: Without automated progress feedback, learners lose 
+   momentum across multi-hour lecture series.
+
+THE SOLUTION: TECHVAULT
+-----------------------
+TechVault delivers a distraction-free, zero-barrier learning experience.
+
+Key Pillars:
+- Zero-Auth & Privacy-First: All progress, lesson checkmarks, and bookmarks 
+  persist 100% locally on the client via localStorage.
+- Tactile Neumorphism: Custom soft clay design tokens (convex `.neu-card`, 
+  concave `.neu-inset`, debossed text, and electric violet glow).
+- Automated 92% Progress: Live polling via YouTube IFrame API auto-marks 
+  lessons complete when students finish >=92% of a video.
+
+TECHNICAL ARCHITECTURE
+----------------------
+- Frontend: React 18 + Vite + TypeScript (Fast builds, strict type safety)
+- Styling: Custom Tailwind CSS + Handcrafted Neumorphic clay tokens
+- Video Engine: YouTube IFrame Player API with decoupled useRef lifecycle hooks
+- Backend: Node.js + Express + TypeScript (Modular RESTful API)
+- Database: MongoDB Atlas + Mongoose (Hierarchical nested course/module schemas)
+- Deployment: Vercel (Edge Client) + Render (Cloud Node API)
+
+FEATURE SET
+-----------
+1. Structured Curricula: Multi-module courses with duration and high-yield flags.
+2. One-Shot Marathons: Deep-dive revision lectures for rapid interview prep.
+3. Automated Tracking: Real-time video progress polling and module aggregation.
+4. Interactive 3D Hero: Kinetic orbiting clock sculpture and clay physics cards.
+5. Instant Search: Fast filtering across disciplines, instructors, and levels.
+
+CASE HIGHLIGHT: THE "ZERO-INTERRUPT VIDEO ENGINE" UPDATE
+--------------------------------------------------------
+Problem: When video progress reached 92%, updating parent React state caused a 
+re-render that recreated the callback, triggering player re-instantiation and 
+resetting playback to second 0.
+
+Implementation:
+- Decoupled Lifecycle: Refactored the completion hook using a persistent 
+  `useRef` callback handle (`onCompleteRef.current`).
+- Uninterrupted Playback: Player mount logic now strictly depends on `videoId`, 
+  allowing background progress writes without reloading the active video.
+
+RESULT
+------
+TechVault delivers a zero-friction, uninterrupted learning platform with 
+0-second onboarding time and 100% fluid responsiveness across all devices.
+
+--------------------------------------------------------------------------------
+Developed by Sankhadip Mondal
+Portfolio: https://sankhadipmondal.vercel.app/
+Live Application: https://vault-one-blush.vercel.app/
+Version: 1.0.0 | Stack: React 18, TypeScript, Express, MongoDB Atlas
+--------------------------------------------------------------------------------
