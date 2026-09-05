@@ -102,16 +102,21 @@ export const Footer: React.FC = () => {
             © {new Date().getFullYear()} TechVault. Non-commercial open educational discovery library.
           </div>
           <div className="flex items-center gap-4">
-            <Link to="/about" className="hover:text-foreground transition-colors">
-              Philosophy & Disclaimers
-            </Link>
             <a
-              href="https://youtube.com"
+              href="https://sankhadipmondal.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-foreground transition-colors"
+            >
+              Made by Sankhadip
+            </a>
+            <a
+              href="https://sankhadipmondal.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors flex items-center gap-1"
             >
-              <span>YouTube</span>
+              <span>Portfolio</span>
               <ExternalLink className="h-3 w-3" />
             </a>
           </div>

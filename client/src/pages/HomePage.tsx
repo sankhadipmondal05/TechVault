@@ -60,9 +60,9 @@ export const HomePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="space-y-24">
+    <div className="space-y-16 sm:space-y-20 md:space-y-24">
       {/* Full-Viewport Hero Section with 50% Submerged Clock Sculpture Flush at Bottom */}
-      <section className="relative pt-2 pb-0 sm:pt-4 sm:pb-0 text-center max-w-7xl mx-auto overflow-hidden rounded-3xl min-h-[calc(100vh-92px)] flex flex-col justify-between">
+      <section className="relative pt-4 sm:pt-6 xl:pt-4 pb-0 text-center max-w-7xl mx-auto overflow-hidden rounded-3xl min-h-0 xl:min-h-[calc(100vh-92px)] flex flex-col justify-start xl:justify-between">
         {/* Curved Flow Guideline Track */}
         <div className="absolute inset-0 pointer-events-none select-none -z-10 hidden md:block">
           <svg className="w-full h-full" viewBox="0 0 1200 450" fill="none" preserveAspectRatio="none">
@@ -162,7 +162,7 @@ export const HomePage: React.FC = () => {
         </div>
 
         {/* Center Hero Content (Headline + Subtitle with balanced badge spacing) */}
-        <div className="relative z-20 max-w-3xl mx-auto px-4 pt-1 sm:pt-2 flex flex-col items-center">
+        <div className="relative z-20 max-w-3xl mx-auto px-4 pt-2 sm:pt-4 xl:pt-2 flex flex-col items-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full neu-btn text-xs font-semibold text-muted-foreground mb-3 sm:mb-4">
             <span className="flex h-2 w-2 rounded-full neu-accent-glow"></span>
             <span className="font-display tracking-wide uppercase text-[10px]">Curated Technical Learning Library</span>
@@ -180,31 +180,31 @@ export const HomePage: React.FC = () => {
           </p>
         </div>
 
-        {/* Center Larger Submerged Clock Sculpture Flush at Bottom */}
-        <div className="relative w-full flex justify-center items-end pointer-events-none select-none overflow-hidden h-64 sm:h-80 md:h-96 -mt-4 sm:-mt-6">
-          <div className="relative w-[440px] h-[440px] sm:w-[580px] sm:h-[580px] md:w-[640px] md:h-[640px] flex items-center justify-center -rotate-90 translate-y-1/2">
+        {/* Center Submerged Clock Sculpture Flush at Bottom */}
+        <div className="relative w-full flex justify-center items-end pointer-events-none select-none overflow-hidden h-52 sm:h-64 md:h-80 xl:h-96 mt-6 sm:mt-8 xl:-mt-6">
+          <div className="relative w-[360px] h-[360px] sm:w-[480px] sm:h-[480px] md:w-[580px] md:h-[580px] xl:w-[640px] xl:h-[640px] flex items-center justify-center -rotate-90 translate-y-1/2">
             {/* Semicircle Indented Sunken Crescent Groove */}
             <div className="absolute inset-0 rounded-full neu-relief-crescent [clip-path:polygon(50%_0,100%_0,100%_100%,50%_100%)]" />
 
             {/* Violet Ambient Glowing Backlight */}
-            <div className="absolute left-2 w-80 h-80 sm:w-[420px] sm:h-[420px] rounded-full neu-accent-glow opacity-85 blur-3xl" />
+            <div className="absolute left-2 w-64 h-64 sm:w-80 sm:h-80 xl:w-[420px] xl:h-[420px] rounded-full neu-accent-glow opacity-85 blur-3xl" />
 
             {/* Central Raised Floating Convex Plate */}
-            <div className="relative w-72 h-72 sm:w-96 sm:h-96 md:w-[420px] md:h-[420px] rounded-full neu-relief-circle z-10 flex items-center justify-center">
+            <div className="relative w-60 h-60 sm:w-80 sm:h-80 md:w-96 md:h-96 xl:w-[420px] xl:h-[420px] rounded-full neu-relief-circle z-10 flex items-center justify-center">
               {/* Inner Core Indented Well */}
-              <div className="w-24 h-24 sm:w-36 sm:h-36 rounded-full neu-inset opacity-60" />
+              <div className="w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-full neu-inset opacity-60" />
             </div>
 
             {/* Orbiting Clock Hand / Bead Armature */}
             <div className="absolute inset-0 z-20 animate-neu-orbit-clock flex items-center justify-center pointer-events-none">
               {/* Clean Raised Clay Orbiting Bead */}
-              <div className="absolute -top-5 sm:-top-6 w-12 h-12 sm:w-14 sm:h-14 rounded-full neu-btn shadow-md" />
+              <div className="absolute -top-4 sm:-top-5 xl:-top-6 w-10 h-10 sm:w-12 sm:h-12 xl:w-14 xl:h-14 rounded-full neu-btn shadow-md" />
             </div>
           </div>
         </div>
 
         {/* Bottom Fade Gradient for seamless hero section transition */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-t from-background via-background/60 to-transparent pointer-events-none z-20" />
+        <div className="absolute bottom-0 left-0 right-0 h-20 sm:h-28 xl:h-32 bg-gradient-to-t from-background via-background/60 to-transparent pointer-events-none z-20" />
       </section>
 
       {/* Continue Learning Banner (Neumorphic Card with Inset Progress) */}
