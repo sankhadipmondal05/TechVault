@@ -175,7 +175,7 @@ export const HomePage: React.FC = () => {
             </span>
           </h1>
 
-          <p className="text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed font-body mt-2">
+          <p className="text-base font-medium text-muted-foreground max-w-xl mx-auto leading-5 font-body mt-3">
             Structured curricula, organized modules, and high-yield one-shot revision videos directly from world-class educators.
           </p>
         </div>
@@ -186,8 +186,10 @@ export const HomePage: React.FC = () => {
             {/* Semicircle Indented Sunken Crescent Groove */}
             <div className="absolute inset-0 rounded-full neu-relief-crescent [clip-path:polygon(50%_0,100%_0,100%_100%,50%_100%)]" />
 
-            {/* Violet Ambient Glowing Backlight */}
-            <div className="absolute left-2 w-64 h-64 sm:w-80 sm:h-80 xl:w-[420px] xl:h-[420px] rounded-full neu-accent-glow opacity-85 blur-3xl" />
+            {/* Violet Ambient Glowing Backlight (Multi-layer leak from behind the central circle onto the path) */}
+            <div className="absolute inset-0 m-auto w-[310px] h-[310px] sm:w-[415px] sm:h-[415px] md:w-[500px] md:h-[500px] xl:w-[555px] xl:h-[555px] rounded-full bg-gradient-to-tr from-[#7047eb] via-[#8b5cf6] to-[#a855f7] opacity-20 blur-2xl pointer-events-none" />
+            <div className="absolute inset-0 m-auto w-[280px] h-[280px] sm:w-[375px] sm:h-[375px] md:w-[450px] md:h-[450px] xl:w-[500px] xl:h-[500px] rounded-full bg-gradient-to-tr from-[#7047eb] via-[#9066ff] to-[#a855f7] opacity-25 blur-xl shadow-[0_0_30px_rgba(112,71,235,0.2)] pointer-events-none" />
+            <div className="absolute inset-0 m-auto w-[255px] h-[255px] sm:w-[345px] sm:h-[345px] md:w-[410px] md:h-[410px] xl:w-[455px] xl:h-[455px] rounded-full neu-accent-glow opacity-25 blur-md shadow-[0_0_16px_rgba(112,71,235,0.25),0_0_8px_rgba(112,71,235,0.2)] pointer-events-none" />
 
             {/* Central Raised Floating Convex Plate */}
             <div className="relative w-60 h-60 sm:w-80 sm:h-80 md:w-96 md:h-96 xl:w-[420px] xl:h-[420px] rounded-full neu-relief-circle z-10 flex items-center justify-center">
@@ -257,14 +259,14 @@ export const HomePage: React.FC = () => {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((n) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 gap-4">
+            {[1, 2, 3, 4, 5, 6].map((n) => (
               <SkeletonCard key={n} />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {featuredSubjects.map((subject) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 gap-4">
+            {featuredSubjects.slice(0, 6).map((subject) => (
               <SubjectCard key={subject._id} subject={subject} />
             ))}
           </div>

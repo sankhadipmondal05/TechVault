@@ -29,6 +29,8 @@ const SubjectSchema: Schema = new Schema(
   { timestamps: true }
 );
 
+SubjectSchema.index({ featured: 1, order: 1, name: 1 });
+SubjectSchema.index({ category: 1, order: 1, name: 1 });
 SubjectSchema.index({ name: 'text', description: 'text' });
 
 export const Subject = mongoose.model<ISubject>('Subject', SubjectSchema);

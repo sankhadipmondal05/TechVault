@@ -45,7 +45,8 @@ export const getOneShots = async (req: Request, res: Response, next: NextFunctio
         .populate('subject', 'name slug icon category')
         .sort(sortOption)
         .skip(skip)
-        .limit(limitNum),
+        .limit(limitNum)
+        .lean(),
       OneShot.countDocuments(filter)
     ]);
 
@@ -65,7 +66,9 @@ export const getOneShots = async (req: Request, res: Response, next: NextFunctio
 export const getOneShotBySlug = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params;
-    const oneShot = await OneShot.findOne({ slug }).populate('subject', 'name slug icon category');
+    const oneShot = await OneShot.findOne({ slug })
+      .populate('subject', 'name slug icon category')
+      .lean();
 
     if (!oneShot) {
       return res.status(404).json({
@@ -80,7 +83,8 @@ export const getOneShotBySlug = async (req: Request, res: Response, next: NextFu
       _id: { $ne: oneShot._id }
     })
       .limit(4)
-      .populate('subject', 'name slug icon category');
+      .populate('subject', 'name slug icon category')
+      .lean();
 
     res.json({
       success: true,
@@ -97,7 +101,8 @@ export const getOneShotsBySubjectSlug = async (req: Request, res: Response, next
     const { subjectSlug } = req.params;
     const oneShots = await OneShot.find({ subjectSlug })
       .populate('subject', 'name slug icon category')
-      .sort({ featured: -1, createdAt: -1 });
+      .sort({ featured: -1, createdAt: -1 })
+      .lean();
 
     res.json({
       success: true,

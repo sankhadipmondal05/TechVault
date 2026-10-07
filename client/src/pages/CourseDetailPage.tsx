@@ -7,6 +7,7 @@ import { CourseCurriculum } from '../components/course/CourseCurriculum';
 import { ProgressBar } from '../components/ui/ProgressBar';
 import { Button } from '../components/ui/Button';
 import { EmptyState } from '../components/ui/EmptyState';
+import { Skeleton } from '../components/ui/Skeleton';
 import { useProgress } from '../hooks/useProgress';
 import { useFavorites } from '../hooks/useFavorites';
 import {
@@ -115,10 +116,10 @@ export const CourseDetailPage: React.FC = () => {
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="h-8 w-1/3 animate-pulse bg-secondary rounded-lg" />
+        <Skeleton className="h-8 w-1/3 rounded-lg" />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 aspect-video bg-secondary animate-pulse rounded-2xl" />
-          <div className="h-96 bg-secondary animate-pulse rounded-2xl" />
+          <Skeleton className="lg:col-span-2 aspect-video rounded-2xl" />
+          <Skeleton className="h-96 rounded-2xl" />
         </div>
       </div>
     );

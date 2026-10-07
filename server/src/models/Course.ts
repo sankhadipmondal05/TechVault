@@ -85,6 +85,10 @@ const CourseSchema: Schema = new Schema(
   { timestamps: true }
 );
 
+CourseSchema.index({ featured: 1, createdAt: -1 });
+CourseSchema.index({ subjectSlug: 1, featured: -1, createdAt: -1 });
+CourseSchema.index({ level: 1, createdAt: -1 });
+
 CourseSchema.index(
   {
     title: 'text',

@@ -40,9 +40,10 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: ['Space Grotesk', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Space Grotesk', 'system-ui', '-apple-system', 'sans-serif'],
         display: ['Syne', 'Space Grotesk', 'sans-serif'],
-        body: ['Inter', 'Space Grotesk', 'sans-serif']
+        body: ['Space Mono', 'Space Grotesk', 'monospace'],
+        mono: ['Space Mono', 'monospace']
       }
     },
   },

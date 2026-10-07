@@ -12,21 +12,55 @@ const api = axios.create({
   }
 });
 
+// In-memory cache & request deduplication for ultra-fast database pulls
+const cache = new Map<string, { data: any; expiry: number }>();
+const pendingRequests = new Map<string, Promise<any>>();
+const CACHE_TTL_MS = 45 * 1000; // 45 seconds
+
+async function cachedGet<T>(url: string, params?: any): Promise<T> {
+  const cacheKey = `${url}:${params ? JSON.stringify(params) : ''}`;
+  const now = Date.now();
+  const cached = cache.get(cacheKey);
+
+  if (cached && cached.expiry > now) {
+    return cached.data as T;
+  }
+
+  if (pendingRequests.has(cacheKey)) {
+    return pendingRequests.get(cacheKey) as Promise<T>;
+  }
+
+  const promise = api
+    .get<T>(url, { params })
+    .then((res) => {
+      cache.set(cacheKey, { data: res.data, expiry: Date.now() + CACHE_TTL_MS });
+      pendingRequests.delete(cacheKey);
+      return res.data;
+    })
+    .catch((err) => {
+      pendingRequests.delete(cacheKey);
+      throw err;
+    });
+
+  pendingRequests.set(cacheKey, promise);
+  return promise;
+}
+
 export const apiService = {
   // Categories
   getCategories: async () => {
-    const res = await api.get<{ success: boolean; data: ICategory[] }>('/categories');
-    return res.data.data;
+    const res = await cachedGet<{ success: boolean; data: ICategory[] }>('/categories');
+    return res.data;
   },
 
   // Subjects
   getSubjects: async (params?: { category?: string; featured?: boolean; search?: string }) => {
-    const res = await api.get<{ success: boolean; count: number; data: ISubject[] }>('/subjects', { params });
-    return res.data.data;
+    const res = await cachedGet<{ success: boolean; count: number; data: ISubject[] }>('/subjects', params);
+    return res.data;
   },
   getSubjectBySlug: async (slug: string) => {
-    const res = await api.get<{ success: boolean; data: ISubject }>(`/subjects/${slug}`);
-    return res.data.data;
+    const res = await cachedGet<{ success: boolean; data: ISubject }>(`/subjects/${slug}`);
+    return res.data;
   },
 
   // Courses
@@ -41,23 +75,22 @@ export const apiService = {
     page?: number;
     limit?: number;
   }) => {
-    const res = await api.get<{
+    return cachedGet<{
       success: boolean;
       count: number;
       total: number;
       totalPages: number;
       currentPage: number;
       data: ICourse[];
-    }>('/courses', { params });
-    return res.data;
+    }>('/courses', params);
   },
   getCourseBySlug: async (slug: string) => {
-    const res = await api.get<{ success: boolean; data: ICourse }>(`/courses/${slug}`);
-    return res.data.data;
+    const res = await cachedGet<{ success: boolean; data: ICourse }>(`/courses/${slug}`);
+    return res.data;
   },
   getCoursesBySubject: async (subjectSlug: string) => {
-    const res = await api.get<{ success: boolean; count: number; data: ICourse[] }>(`/courses/subject/${subjectSlug}`);
-    return res.data.data;
+    const res = await cachedGet<{ success: boolean; count: number; data: ICourse[] }>(`/courses/subject/${subjectSlug}`);
+    return res.data;
   },
 
   // One-Shots
@@ -72,33 +105,30 @@ export const apiService = {
     page?: number;
     limit?: number;
   }) => {
-    const res = await api.get<{
+    return cachedGet<{
       success: boolean;
       count: number;
       total: number;
       totalPages: number;
       currentPage: number;
       data: IOneShot[];
-    }>('/one-shots', { params });
-    return res.data;
+    }>('/one-shots', params);
   },
   getOneShotBySlug: async (slug: string) => {
-    const res = await api.get<{ success: boolean; data: IOneShot; related: IOneShot[] }>(`/one-shots/${slug}`);
-    return res.data;
+    return cachedGet<{ success: boolean; data: IOneShot; related: IOneShot[] }>(`/one-shots/${slug}`);
   },
   getOneShotsBySubject: async (subjectSlug: string) => {
-    const res = await api.get<{ success: boolean; count: number; data: IOneShot[] }>(`/one-shots/subject/${subjectSlug}`);
-    return res.data.data;
+    const res = await cachedGet<{ success: boolean; count: number; data: IOneShot[] }>(`/one-shots/subject/${subjectSlug}`);
+    return res.data;
   },
 
   // Global Search
   search: async (params: { q: string; type?: 'all' | 'course' | 'one-shot' | 'subject'; subject?: string; level?: string }) => {
-    const res = await api.get<{
+    return cachedGet<{
       success: boolean;
       query: string;
       counts: { total: number; courses: number; oneShots: number; subjects: number };
       data: { courses: ICourse[]; oneShots: IOneShot[]; subjects: ISubject[] };
-    }>('/search', { params });
-    return res.data;
+    }>('/search', params);
   }
 };

@@ -103,7 +103,7 @@ export const Footer: React.FC = () => {
           </div>
           <div className="flex items-center gap-4">
             <a
-              href="https://sankhadipmondal.vercel.app/"
+              href="https://sankhadip-professional-portfolio.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors"
@@ -111,7 +111,7 @@ export const Footer: React.FC = () => {
               Made by Sankhadip
             </a>
             <a
-              href="https://sankhadipmondal.vercel.app/"
+              href="https://sankhadip-professional-portfolio.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors flex items-center gap-1"

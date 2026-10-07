@@ -42,6 +42,10 @@ const OneShotSchema: Schema = new Schema(
   { timestamps: true }
 );
 
+OneShotSchema.index({ featured: 1, createdAt: -1 });
+OneShotSchema.index({ subjectSlug: 1, featured: -1, createdAt: -1 });
+OneShotSchema.index({ level: 1, createdAt: -1 });
+
 OneShotSchema.index(
   {
     title: 'text',

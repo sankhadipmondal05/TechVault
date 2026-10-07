@@ -43,10 +43,12 @@ export const getCourses = async (req: Request, res: Response, next: NextFunction
 
     const [courses, total] = await Promise.all([
       Course.find(filter)
+        .select('-modules')
         .populate('subject', 'name slug icon category')
         .sort(sortOption)
         .skip(skip)
-        .limit(limitNum),
+        .limit(limitNum)
+        .lean(),
       Course.countDocuments(filter)
     ]);
 
@@ -66,7 +68,9 @@ export const getCourses = async (req: Request, res: Response, next: NextFunction
 export const getCourseBySlug = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params;
-    const course = await Course.findOne({ slug }).populate('subject', 'name slug icon category popularTopics');
+    const course = await Course.findOne({ slug })
+      .populate('subject', 'name slug icon category popularTopics')
+      .lean();
 
     if (!course) {
       return res.status(404).json({
@@ -88,8 +92,10 @@ export const getCoursesBySubjectSlug = async (req: Request, res: Response, next:
   try {
     const { subjectSlug } = req.params;
     const courses = await Course.find({ subjectSlug })
+      .select('-modules')
       .populate('subject', 'name slug icon category')
-      .sort({ featured: -1, createdAt: -1 });
+      .sort({ featured: -1, createdAt: -1 })
+      .lean();
 
     res.json({
       success: true,

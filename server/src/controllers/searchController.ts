@@ -57,25 +57,30 @@ export const globalSearch = async (req: Request, res: Response, next: NextFuncti
       oneShotFilter.level = level;
     }
 
-    let courses: any[] = [];
-    let oneShots: any[] = [];
-    let subjects: any[] = [];
+    const fetchCourses = (!type || type === 'all' || type === 'course')
+      ? Course.find(courseFilter)
+          .select('-modules')
+          .populate('subject', 'name slug icon category')
+          .limit(20)
+          .lean()
+      : Promise.resolve([]);
 
-    if (!type || type === 'all' || type === 'course') {
-      courses = await Course.find(courseFilter)
-        .populate('subject', 'name slug icon category')
-        .limit(20);
-    }
+    const fetchOneShots = (!type || type === 'all' || type === 'one-shot')
+      ? OneShot.find(oneShotFilter)
+          .populate('subject', 'name slug icon category')
+          .limit(20)
+          .lean()
+      : Promise.resolve([]);
 
-    if (!type || type === 'all' || type === 'one-shot') {
-      oneShots = await OneShot.find(oneShotFilter)
-        .populate('subject', 'name slug icon category')
-        .limit(20);
-    }
+    const fetchSubjects = (!type || type === 'all' || type === 'subject')
+      ? Subject.find(subjectFilter).limit(10).lean()
+      : Promise.resolve([]);
 
-    if (!type || type === 'all' || type === 'subject') {
-      subjects = await Subject.find(subjectFilter).limit(10);
-    }
+    const [courses, oneShots, subjects] = await Promise.all([
+      fetchCourses,
+      fetchOneShots,
+      fetchSubjects
+    ]);
 
     const total = courses.length + oneShots.length + subjects.length;
 

@@ -4,7 +4,7 @@ import { apiService } from '../services/api';
 import { ISubject, ICourse, IOneShot } from '../types';
 import { CourseCard } from '../components/cards/CourseCard';
 import { OneShotCard } from '../components/cards/OneShotCard';
-import { SkeletonCard } from '../components/ui/Skeleton';
+import { Skeleton, SkeletonCard } from '../components/ui/Skeleton';
 import { EmptyState } from '../components/ui/EmptyState';
 import {
   BookOpen,
@@ -50,7 +50,7 @@ export const SubjectDetailPage: React.FC = () => {
   if (loading) {
     return (
       <div className="space-y-8">
-        <div className="h-40 w-full animate-pulse bg-secondary/50 rounded-2xl" />
+        <Skeleton className="h-40 w-full rounded-2xl" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1, 2, 3].map((n) => (
             <SkeletonCard key={n} />

@@ -12,7 +12,7 @@ export const getSubjects = async (req: Request, res: Response, next: NextFunctio
       filter.$text = { $search: search as string };
     }
 
-    const subjects = await Subject.find(filter).sort({ order: 1, name: 1 });
+    const subjects = await Subject.find(filter).sort({ order: 1, name: 1 }).lean();
     res.json({
       success: true,
       count: subjects.length,
@@ -26,7 +26,7 @@ export const getSubjects = async (req: Request, res: Response, next: NextFunctio
 export const getSubjectBySlug = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params;
-    const subject = await Subject.findOne({ slug });
+    const subject = await Subject.findOne({ slug }).lean();
 
     if (!subject) {
       return res.status(404).json({

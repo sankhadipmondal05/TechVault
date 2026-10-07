@@ -6,6 +6,7 @@ import { VideoPlayer } from '../components/video/VideoPlayer';
 import { OneShotCard } from '../components/cards/OneShotCard';
 import { Button } from '../components/ui/Button';
 import { EmptyState } from '../components/ui/EmptyState';
+import { Skeleton } from '../components/ui/Skeleton';
 import { useFavorites } from '../hooks/useFavorites';
 import {
   Bookmark,
@@ -54,9 +55,9 @@ export const OneShotDetailPage: React.FC = () => {
   if (loading) {
     return (
       <div className="space-y-6 max-w-5xl mx-auto">
-        <div className="h-8 w-1/3 animate-pulse bg-secondary rounded-lg" />
-        <div className="aspect-video bg-secondary animate-pulse rounded-2xl" />
-        <div className="h-32 bg-secondary animate-pulse rounded-2xl" />
+        <Skeleton className="h-8 w-1/3 rounded-lg" />
+        <Skeleton className="aspect-video rounded-2xl" />
+        <Skeleton className="h-32 rounded-2xl" />
       </div>
     );
   }

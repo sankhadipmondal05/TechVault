@@ -29,7 +29,6 @@
 @layer base {
   body {
     @apply bg-background text-foreground font-sans;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
   h1,
@@ -37,6 +36,13 @@
   h3 {
     font-family: 'Syne', 'Space Grotesk', sans-serif;
     letter-spacing: -0.025em;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: 'Space Mono', monospace;
   }
 }
 
@@ -553,4 +559,49 @@
   background: linear-gradient(135deg, #6036db 0%, #8054ff 100%);
   box-shadow: 0 3px 12px rgba(112, 71, 235, 0.65),
     inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+/* ==========================================================================
+   SKELETON SHIMMER EFFECT
+   ========================================================================== */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  position: relative;
+  overflow: hidden;
+  background-color: hsl(var(--secondary) / 0.7);
+}
+
+.animate-shimmer::after {
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 1.8s ease-in-out infinite;
+  content: '';
+}
+
+.dark .animate-shimmer {
+  background-color: hsl(var(--secondary) / 0.35);
+}
+
+.dark .animate-shimmer::after {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }

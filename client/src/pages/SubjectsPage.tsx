@@ -54,30 +54,50 @@ export const SubjectsPage: React.FC = () => {
       </div>
 
       {/* Category Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+      <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
         <button
           onClick={() => setSelectedCategory('All')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors shrink-0 ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-full neu-inset text-xs font-semibold transition-all shrink-0 ${
             selectedCategory === 'All'
-              ? 'bg-primary text-primary-foreground font-semibold shadow-sm'
-              : 'bg-secondary text-muted-foreground hover:text-foreground'
+              ? 'text-accent ring-1 ring-accent/40'
+              : 'text-muted-foreground hover:text-foreground hover:brightness-95'
           }`}
         >
-          All Categories ({subjects.length})
+          <span>All Categories</span>
+          <span
+            className={`h-4 min-w-4 px-1.5 flex items-center justify-center text-[10px] font-bold rounded-full transition-all ${
+              selectedCategory === 'All'
+                ? 'neu-accent-glow text-white shadow-sm'
+                : 'bg-secondary text-muted-foreground'
+            }`}
+          >
+            {subjects.length}
+          </span>
         </button>
+
         {categories.map((cat) => {
           const count = subjects.filter((s) => s.category === cat.name).length;
+          const isSelected = selectedCategory === cat.name;
           return (
             <button
               key={cat._id}
               onClick={() => setSelectedCategory(cat.name)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors shrink-0 ${
-                selectedCategory === cat.name
-                  ? 'bg-primary text-primary-foreground font-semibold shadow-sm'
-                  : 'bg-secondary text-muted-foreground hover:text-foreground'
+              className={`flex items-center gap-2 px-4 py-2 rounded-full neu-inset text-xs font-semibold transition-all shrink-0 ${
+                isSelected
+                  ? 'text-accent ring-1 ring-accent/40'
+                  : 'text-muted-foreground hover:text-foreground hover:brightness-95'
               }`}
             >
-              {cat.name} ({count})
+              <span>{cat.name}</span>
+              <span
+                className={`h-4 min-w-4 px-1.5 flex items-center justify-center text-[10px] font-bold rounded-full transition-all ${
+                  isSelected
+                    ? 'neu-accent-glow text-white shadow-sm'
+                    : 'bg-secondary text-muted-foreground'
+                }`}
+              >
+                {count}
+              </span>
             </button>
           );
         })}
